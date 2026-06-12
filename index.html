@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="google-site-verification" content="Mtm78Cd6JEQuBNu8LQx5BqDqxGcd535w-mJC47JNpKA" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gabriel Budel (Gaby Budel) — Applied Scientist & AI Researcher</title>
+    <title>Gabriel Budel (Gaby Budel) — Applied Scientist &amp; AI Researcher</title>
     <meta name="description" content="Gabriel Budel, also known as Gaby Budel — Applied Scientist at Uber with a Ph.D. in AI and Network Science from TU Delft. Research on complex networks, graph embeddings, and machine learning.">
     <meta name="author" content="Gabriel Budel">
     <meta name="keywords" content="Gabriel Budel, Gaby Budel, network science, AI researcher, applied scientist, TU Delft, graph embeddings, complex networks, hyperbolic geometry, machine learning, NLP">
@@ -64,25 +64,23 @@
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Hanken+Grotesk:ital,wght@0,300..600;1,300..600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         /* ============================================================
-           GILDED INK — deep-ink ground, champagne glints, constellation
+           HYPERBOLIC ATLAS · V3 LIGHT — geodesics of the Poincaré disk,
+           a ledger of work, and a sidebar that keeps its place
            ============================================================ */
         :root {
-            --ink: #0b1017;
-            --ink-2: #0e1520;
-            --ink-3: #131c2a;
-            --surface: rgba(255, 255, 255, 0.025);
-            --surface-hover: rgba(255, 255, 255, 0.05);
-            --text: #e9e4da;
-            --text-secondary: #a8aeb8;
-            --text-tertiary: #6e7682;
-            --gold: #d8b478;
-            --gold-bright: #efd6a4;
-            --gold-dim: rgba(216, 180, 120, 0.35);
-            --gold-faint: rgba(216, 180, 120, 0.12);
-            --ice: #8db8e8;
-            --hairline: rgba(233, 228, 218, 0.09);
-            --hairline-strong: rgba(233, 228, 218, 0.16);
-            --radius: 12px;
+            --ink: #f6f2ea;
+            --ink-2: #fdfbf6;
+            --surface: rgba(255, 255, 255, 0.65);
+            --text: #26221b;
+            --text-secondary: #56524a;
+            --text-tertiary: #85806f;
+            --gold: #9a7434;
+            --gold-bright: #7c5a1f;
+            --gold-dim: rgba(154, 116, 52, 0.35);
+            --gold-faint: rgba(154, 116, 52, 0.12);
+            --ice: #3f6fa3;
+            --hairline: rgba(44, 36, 24, 0.09);
+            --hairline-strong: rgba(44, 36, 24, 0.16);
             --font-display: 'Fraunces', Georgia, serif;
             --font-body: 'Hanken Grotesk', -apple-system, sans-serif;
             --font-mono: 'Spline Sans Mono', 'SF Mono', monospace;
@@ -92,7 +90,7 @@
 
         html { scroll-behavior: smooth; }
 
-        ::selection { background: var(--gold-dim); color: #fff; }
+        ::selection { background: var(--gold-dim); color: #211c14; }
 
         body {
             font-family: var(--font-body);
@@ -106,16 +104,14 @@
             overflow-x: hidden;
         }
 
-        /* --- Atmospheric ground: vignettes + grain --- */
         body::before {
             content: '';
             position: fixed;
             inset: 0;
-            z-index: -2;
+            z-index: -3;
             background:
-                radial-gradient(ellipse 80% 55% at 70% -10%, rgba(141, 184, 232, 0.07), transparent 60%),
-                radial-gradient(ellipse 65% 45% at 12% 8%, rgba(216, 180, 120, 0.06), transparent 55%),
-                radial-gradient(ellipse 90% 60% at 50% 110%, rgba(19, 28, 42, 0.9), transparent 70%),
+                radial-gradient(ellipse 70% 60% at 85% 0%, rgba(63, 111, 163, 0.05), transparent 60%),
+                radial-gradient(ellipse 60% 50% at 0% 30%, rgba(154, 116, 52, 0.04), transparent 55%),
                 var(--ink);
         }
 
@@ -125,301 +121,194 @@
             inset: 0;
             z-index: -1;
             pointer-events: none;
-            opacity: 0.5;
+            opacity: 0.35;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
         }
 
-        /* ============ NAVIGATION ============ */
-        nav {
-            position: sticky;
+        /* Poincaré disk — geodesics generated at load, turning faintly with scroll */
+        #disk {
+            position: fixed;
+            top: -190px;
+            right: -230px;
+            width: 760px;
+            height: 760px;
+            z-index: -2;
+            pointer-events: none;
+            will-change: transform;
+        }
+
+        /* Gold hairline tracking scroll progress */
+        #progress {
+            position: fixed;
             top: 0;
-            z-index: 100;
-            background: rgba(11, 16, 23, 0.65);
-            backdrop-filter: blur(18px) saturate(140%);
-            -webkit-backdrop-filter: blur(18px) saturate(140%);
-            border-bottom: 1px solid var(--hairline);
-            transition: border-color 0.4s ease;
+            left: 0;
+            height: 2px;
+            width: 0;
+            z-index: 200;
+            background: linear-gradient(90deg, var(--gold-dim), var(--gold-bright));
+            box-shadow: 0 0 8px rgba(124, 90, 31, 0.35);
         }
 
-        nav.scrolled {
-            border-bottom-color: var(--gold-faint);
-        }
-
-        nav .nav-inner {
-            max-width: 880px;
+        /* ============ LAYOUT ============ */
+        .layout {
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 0 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1.2rem;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 5rem;
+            padding: 5rem 2rem 5rem;
+            align-items: start;
         }
 
-        nav .monogram {
+        /* ============ SIDEBAR ============ */
+        aside {
+            position: sticky;
+            top: 5rem;
+        }
+
+        aside img {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid var(--hairline-strong);
+            box-shadow: 0 0 0 6px rgba(154, 116, 52, 0.05);
+            margin-bottom: 1.4rem;
+        }
+
+        aside h1 {
             font-family: var(--font-display);
+            font-size: 2.3rem;
+            font-weight: 420;
+            font-variation-settings: 'opsz' 100;
+            line-height: 1.05;
+            letter-spacing: -0.015em;
+            margin-bottom: 0.7rem;
+        }
+
+        aside h1 .surname {
+            display: block;
             font-style: italic;
-            font-weight: 500;
-            font-size: 1.05rem;
             color: var(--gold);
-            text-decoration: none;
-            flex-shrink: 0;
-            letter-spacing: 0.02em;
+            font-weight: 380;
         }
 
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 0.15rem;
-            padding: 0.65rem 0;
-            overflow-x: auto;
-            scrollbar-width: none;
-        }
-
-        nav ul::-webkit-scrollbar { display: none; }
-
-        nav ul a {
-            text-decoration: none;
-            color: var(--text-secondary);
-            font-size: 0.78rem;
-            font-weight: 450;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
+        aside .kicker {
             font-family: var(--font-mono);
-            white-space: nowrap;
-            padding: 0.35rem 0.7rem;
-            border-radius: 6px;
-            position: relative;
+            font-size: 0.68rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-tertiary);
+            margin-bottom: 1.6rem;
+            line-height: 2;
+        }
+
+        aside .contact {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            margin-bottom: 2.2rem;
+        }
+
+        aside .contact a {
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+            letter-spacing: 0.04em;
+            color: var(--text-secondary);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: fit-content;
             transition: color 0.3s ease;
         }
 
-        nav ul a::after {
-            content: '';
-            position: absolute;
-            left: 0.7rem;
-            right: 0.7rem;
-            bottom: 0.15rem;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--gold-bright), transparent);
-            transform: scaleX(0);
-            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        aside .contact a::before {
+            content: '→';
+            color: var(--gold-dim);
+            transition: color 0.3s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        nav ul a:hover { color: var(--gold-bright); }
-        nav ul a:hover::after { transform: scaleX(1); }
+        aside .contact a:hover { color: var(--gold-bright); }
+        aside .contact a:hover::before { color: var(--gold-bright); transform: translateX(3px); }
 
-        /* ============ CONTAINER ============ */
-        .container {
-            max-width: 880px;
-            margin: 0 auto;
-            padding: 0 1.5rem 4rem;
+        aside .toc {
+            list-style: none;
+            border-top: 1px solid var(--hairline);
+            padding-top: 1.4rem;
         }
 
-        /* ============ HERO ============ */
-        .hero {
-            position: relative;
-            padding: 5rem 0 4rem;
-        }
-
-        #constellation {
-            position: absolute;
-            top: -64px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 0;
-            pointer-events: none;
-            -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,1) 55%, transparent 98%);
-            mask-image: linear-gradient(180deg, rgba(0,0,0,1) 55%, transparent 98%);
-        }
-
-        .header {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            gap: 3rem;
-            align-items: center;
-        }
-
-        /* Photo with slow-rotating gilded ring + hover glint */
-        .photo-wrapper {
-            flex-shrink: 0;
-            position: relative;
-            width: 172px;
-            height: 172px;
-        }
-
-        @property --ring-angle {
-            syntax: '<angle>';
-            initial-value: 0deg;
-            inherits: false;
-        }
-
-        .photo-wrapper::before {
-            content: '';
-            position: absolute;
-            inset: -5px;
-            border-radius: 50%;
-            background: conic-gradient(from var(--ring-angle),
-                var(--gold-dim) 0deg,
-                var(--gold-bright) 40deg,
-                var(--gold-dim) 90deg,
-                rgba(141, 184, 232, 0.25) 180deg,
-                var(--gold-dim) 270deg,
-                var(--gold-dim) 360deg);
-            animation: ringSpin 14s linear infinite;
-        }
-
-        .photo-wrapper::after {
-            content: '';
-            position: absolute;
-            inset: -18px;
-            border-radius: 50%;
-            background: radial-gradient(circle, var(--gold-faint), transparent 70%);
-            z-index: -1;
-        }
-
-        @keyframes ringSpin {
-            to { --ring-angle: 360deg; }
-        }
-
-        .header img {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid var(--ink);
-            transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        .photo-wrapper:hover img { transform: scale(1.03); }
-
-        .header-text { min-width: 0; }
-
-        .kicker {
+        aside .toc a {
             font-family: var(--font-mono);
-            font-size: 0.72rem;
-            letter-spacing: 0.22em;
+            font-size: 0.74rem;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
-            color: var(--gold);
-            margin-bottom: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-
-        .kicker::before {
-            content: '';
-            width: 2rem;
-            height: 1px;
-            background: linear-gradient(90deg, var(--gold), transparent);
-        }
-
-        /* The name — gold sheen sweeps across the letters */
-        .header-text h1 {
-            font-family: var(--font-display);
-            font-size: clamp(2.6rem, 6vw, 3.6rem);
-            font-weight: 420;
-            font-variation-settings: 'opsz' 100;
-            line-height: 1.08;
-            letter-spacing: -0.015em;
-            margin-bottom: 0.9rem;
-            background: linear-gradient(110deg,
-                var(--text) 0%, var(--text) 38%,
-                var(--gold-bright) 48%,
-                #fdf6e8 52%,
-                var(--gold-bright) 56%,
-                var(--text) 66%, var(--text) 100%);
-            background-size: 280% 100%;
-            background-position: 100% 0;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            color: var(--text);
-            animation: nameSheen 7s ease-in-out infinite;
-        }
-
-        @keyframes nameSheen {
-            0%, 55%, 100% { background-position: 100% 0; }
-            75% { background-position: 0% 0; }
-        }
-
-        .header-text .links {
-            font-size: 0.82rem;
-            margin-bottom: 1.3rem;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.55rem;
-            align-items: center;
-        }
-
-        .header-text .links a {
-            font-family: var(--font-mono);
-            color: var(--text-secondary);
+            color: var(--text-tertiary);
             text-decoration: none;
-            padding: 0.28rem 0.85rem;
-            border: 1px solid var(--hairline-strong);
-            border-radius: 99px;
-            letter-spacing: 0.04em;
-            position: relative;
-            overflow: hidden;
-            transition: color 0.3s ease, border-color 0.3s ease;
+            display: flex;
+            align-items: baseline;
+            gap: 0.7rem;
+            padding: 0.32rem 0;
+            transition: color 0.3s ease;
         }
 
-        .header-text .links a::before {
+
+        aside .toc a:hover,
+        aside .toc a.active { color: var(--text); }
+
+
+        aside .toc a .lbl { position: relative; }
+
+        aside .toc a .lbl::after {
             content: '';
             position: absolute;
-            inset: 0;
-            background: linear-gradient(105deg, transparent 35%, rgba(239, 214, 164, 0.18) 50%, transparent 65%);
-            transform: translateX(-110%);
-            transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+            left: 0;
+            right: 100%;
+            bottom: -2px;
+            height: 1px;
+            background: var(--gold-dim);
+            transition: right 0.4s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        .header-text .links a:hover {
-            color: var(--gold-bright);
-            border-color: var(--gold-dim);
-        }
+        aside .toc a.active .lbl::after { right: 0; }
 
-        .header-text .links a:hover::before { transform: translateX(110%); }
+        /* ============ MAIN ============ */
+        main { min-width: 0; }
 
-        .header-text .bio {
+        .about p {
             color: var(--text-secondary);
-            font-size: 0.96rem;
-            line-height: 1.8;
-            max-width: 560px;
-            font-weight: 330;
+            font-size: 1.02rem;
+            line-height: 1.9;
+            max-width: 620px;
         }
 
-        .header-text .bio strong {
-            color: var(--text);
-            font-weight: 480;
+        .about p::first-letter {
+            font-family: var(--font-display);
+            font-style: italic;
+            font-size: 3.6em;
+            float: left;
+            line-height: 0.78;
+            padding: 0.08em 0.14em 0 0;
+            color: var(--gold);
         }
 
-        /* ============ SECTIONS ============ */
-        section {
-            padding: 3.2rem 0 1rem;
-            position: relative;
-        }
+        .about strong { color: var(--text); font-weight: 480; }
+
+        section { padding-top: 4rem; }
 
         .section-head {
             display: flex;
             align-items: baseline;
             gap: 1rem;
-            margin-bottom: 1.8rem;
+            margin-bottom: 1.6rem;
         }
 
-        .section-head .index {
-            font-family: var(--font-mono);
-            font-size: 0.72rem;
-            color: var(--gold);
-            letter-spacing: 0.15em;
-        }
 
         section h2 {
             font-family: var(--font-display);
-            font-size: 1.65rem;
+            font-size: 1.7rem;
             font-weight: 440;
             font-style: italic;
-            letter-spacing: 0.005em;
             color: var(--text);
             white-space: nowrap;
         }
@@ -428,61 +317,56 @@
             flex: 1;
             height: 1px;
             align-self: center;
-            background: linear-gradient(90deg, var(--gold-dim), var(--hairline) 40%, transparent);
+            background: linear-gradient(90deg, var(--gold-faint), var(--hairline) 40%, transparent);
         }
 
-        /* ============ GLINT CARDS (publications, talks) ============ */
-        .pub, .talk {
-            position: relative;
-            margin-bottom: 0.7rem;
-            padding: 1.1rem 1.4rem 1.1rem 1.6rem;
+        /* ============ LEDGER ROWS ============ */
+        .row {
+            display: grid;
+            grid-template-columns: 76px 1fr;
+            gap: 1.3rem;
+            padding: 1rem 0.8rem 1rem 0.4rem;
+            border-bottom: 1px solid var(--hairline);
             font-size: 0.91rem;
             line-height: 1.75;
-            border-radius: var(--radius);
-            border: 1px solid transparent;
             color: var(--text-secondary);
-            overflow: hidden;
-            transition: background 0.35s ease, border-color 0.35s ease, transform 0.35s ease;
+            transition: background 0.35s ease;
         }
 
-        /* gold hairline that grows on hover */
-        .pub::before, .talk::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            height: 0;
-            width: 2px;
-            background: linear-gradient(180deg, var(--gold-bright), var(--gold-dim));
-            border-radius: 2px;
-            transform: translateY(-50%);
-            transition: height 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        .row:last-child { border-bottom: none; }
+
+        .row .yr {
+            font-family: var(--font-mono);
+            font-size: 0.74rem;
+            letter-spacing: 0.06em;
+            color: var(--gold-dim);
+            padding-top: 0.25rem;
+            transition: color 0.35s ease, text-shadow 0.35s ease;
+            white-space: nowrap;
         }
 
-        /* the glint: a light streak sweeping across */
-        .pub::after, .talk::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            background: linear-gradient(105deg, transparent 40%, rgba(239, 214, 164, 0.07) 50%, transparent 60%);
-            transform: translateX(-110%) skewX(-8deg);
+        .row:hover { background: var(--surface); }
+
+        /* the year ignites */
+        .row:hover .yr {
+            color: var(--gold-bright);
+            text-shadow: 0 0 14px rgba(124, 90, 31, 0.45);
         }
 
-        .pub:hover, .talk:hover {
-            background: var(--surface);
-            border-color: var(--hairline);
-            transform: translateX(4px);
+        .row strong {
+            color: var(--text);
+            font-weight: 500;
+            background-image: linear-gradient(90deg, var(--gold-dim), var(--gold-dim));
+            background-size: 0% 1px;
+            background-repeat: no-repeat;
+            background-position: 0 96%;
+            transition: background-size 0.5s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        .pub:hover::before, .talk:hover::before { height: 60%; }
+        /* a gold underline draws itself beneath the title */
+        .row:hover strong { background-size: 100% 1px; }
 
-        .pub:hover::after, .talk:hover::after {
-            transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-            transform: translateX(110%) skewX(-8deg);
-        }
-
-        .pub em {
+        .row em {
             color: var(--text);
             font-style: italic;
             font-family: var(--font-display);
@@ -490,190 +374,57 @@
             font-weight: 380;
         }
 
-        .pub a {
+        .row .meta {
+            display: block;
+            font-size: 0.84rem;
+            color: var(--text-tertiary);
+        }
+
+        .row a {
             font-family: var(--font-mono);
             color: var(--gold);
             text-decoration: none;
-            font-size: 0.76rem;
+            font-size: 0.74rem;
             font-weight: 500;
             letter-spacing: 0.05em;
-            padding: 0.12rem 0.5rem;
-            margin-left: 0.15rem;
+            padding: 0.1rem 0.5rem;
             border: 1px solid var(--gold-faint);
             border-radius: 99px;
             white-space: nowrap;
             transition: all 0.3s ease;
         }
 
-        .pub a:hover {
-            color: var(--ink);
-            background: var(--gold);
-            border-color: var(--gold);
-            box-shadow: 0 0 18px rgba(216, 180, 120, 0.35);
+        .row a:hover {
+            color: var(--gold-bright);
+            background: var(--gold-faint);
+            border-color: var(--gold-dim);
         }
 
-        .talk strong {
-            color: var(--text);
-            font-weight: 500;
+        /* ============ REVEAL ============ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        .talk .venue {
-            display: block;
-            font-size: 0.84rem;
-            color: var(--text-tertiary);
-            margin-top: 0.1rem;
-        }
+        .reveal.in { opacity: 1; transform: none; }
 
-        /* ============ SOFTWARE GRID ============ */
-        .software-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.9rem;
-        }
+        aside { animation: fadeIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; }
+        .about { animation: fadeIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both; }
 
-        .software-item {
-            position: relative;
-            padding: 1.4rem 1.5rem;
-            font-size: 0.9rem;
-            background: linear-gradient(var(--ink-2), var(--ink-2)) padding-box,
-                        linear-gradient(135deg, var(--hairline-strong), var(--hairline) 50%, var(--hairline-strong)) border-box;
-            border: 1px solid transparent;
-            border-radius: var(--radius);
-            overflow: hidden;
-            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
-        }
-
-        .software-item::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            background: linear-gradient(115deg, transparent 35%, rgba(239, 214, 164, 0.09) 50%, transparent 65%);
-            transform: translateX(-110%) skewX(-10deg);
-        }
-
-        .software-item:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45), 0 0 0 1px var(--gold-faint), 0 0 32px rgba(216, 180, 120, 0.08);
-        }
-
-        .software-item:hover::before {
-            transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-            transform: translateX(110%) skewX(-10deg);
-        }
-
-        .software-item strong {
-            font-family: var(--font-display);
-            font-weight: 460;
-            color: var(--text);
-            display: block;
-            margin-bottom: 0.2rem;
-            font-size: 1.02rem;
-            letter-spacing: 0.005em;
-        }
-
-        .software-item .software-meta {
-            font-family: var(--font-mono);
-            color: var(--text-tertiary);
-            font-size: 0.74rem;
-            letter-spacing: 0.03em;
-            margin-bottom: 0.7rem;
-        }
-
-        .software-item a {
-            font-family: var(--font-mono);
-            color: var(--gold);
-            text-decoration: none;
-            font-size: 0.76rem;
-            letter-spacing: 0.02em;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.35rem;
-            transition: color 0.3s ease;
-            word-break: break-all;
-        }
-
-        .software-item a::before {
-            content: '→';
-            flex-shrink: 0;
-            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        .software-item a:hover { color: var(--gold-bright); }
-        .software-item a:hover::before { transform: translateX(3px); }
-
-        /* ============ TIMELINE (experience, education) ============ */
-        .edu-list {
-            position: relative;
-            padding-left: 1.7rem;
-        }
-
-        .edu-list::before {
-            content: '';
-            position: absolute;
-            left: 3px;
-            top: 0.6rem;
-            bottom: 0.6rem;
-            width: 1px;
-            background: linear-gradient(180deg, var(--gold-dim), var(--hairline) 70%, transparent);
-        }
-
-        .edu-item {
-            position: relative;
-            margin-bottom: 1.6rem;
-            padding: 0.3rem 0.8rem;
-            font-size: 0.91rem;
-            border-radius: 8px;
-            transition: background 0.35s ease;
-        }
-
-        .edu-item:last-child { margin-bottom: 0; }
-
-        .edu-item::before {
-            content: '';
-            position: absolute;
-            left: -1.92rem;
-            top: 0.85rem;
-            width: 7px;
-            height: 7px;
-            background: var(--ink);
-            border: 1.5px solid var(--gold);
-            border-radius: 50%;
-            transition: background 0.35s ease, box-shadow 0.35s ease;
-        }
-
-        .edu-item:hover { background: var(--surface); }
-
-        .edu-item:hover::before {
-            background: var(--gold-bright);
-            box-shadow: 0 0 12px rgba(239, 214, 164, 0.7);
-        }
-
-        .edu-item .degree {
-            font-weight: 500;
-            color: var(--text);
-            font-size: 0.95rem;
-        }
-
-        .edu-item .institution {
-            color: var(--text-secondary);
-            font-weight: 330;
-        }
-
-        .edu-item .detail {
-            color: var(--text-tertiary);
-            font-size: 0.82rem;
-            font-weight: 330;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(18px); }
+            to { opacity: 1; transform: none; }
         }
 
         /* ============ FOOTER ============ */
         footer {
-            margin-top: 3rem;
+            grid-column: 1 / -1;
+            margin-top: 4rem;
             padding-top: 2rem;
             border-top: 1px solid var(--hairline);
             display: flex;
             justify-content: space-between;
-            align-items: center;
             gap: 1rem;
             flex-wrap: wrap;
             font-family: var(--font-mono);
@@ -687,29 +438,8 @@
             font-style: italic;
             font-size: 0.95rem;
             color: var(--gold-dim);
-            letter-spacing: 0.02em;
         }
 
-        /* ============ REVEAL ON SCROLL ============ */
-        .reveal {
-            opacity: 0;
-            transform: translateY(22px);
-            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        .reveal.in {
-            opacity: 1;
-            transform: none;
-        }
-
-        .hero .header { animation: heroIn 1s cubic-bezier(0.22, 1, 0.36, 1) both; }
-
-        @keyframes heroIn {
-            from { opacity: 0; transform: translateY(26px); }
-            to { opacity: 1; transform: none; }
-        }
-
-        /* ============ REDUCED MOTION ============ */
         @media (prefers-reduced-motion: reduce) {
             html { scroll-behavior: auto; }
             *, *::before, *::after {
@@ -718,400 +448,533 @@
                 transition-duration: 0.01ms !important;
             }
             .reveal { opacity: 1; transform: none; }
-            #constellation { display: none; }
+            #disk { display: none; }
         }
 
         /* ============ RESPONSIVE ============ */
-        @media (max-width: 680px) {
-            .hero { padding: 3.2rem 0 2.6rem; }
-
-            .header {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-                gap: 1.8rem;
+        @media (max-width: 920px) {
+            .layout {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+                padding: 3rem 1.2rem 3.5rem;
             }
 
-            .photo-wrapper { width: 140px; height: 140px; }
+            aside { position: static; }
 
-            .kicker { justify-content: center; }
-            .kicker::before { display: none; }
+            aside .toc {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.2rem 1.2rem;
+            }
 
-            .header-text .links { justify-content: center; }
-            .header-text .bio { max-width: 100%; }
+            #disk {
+                top: -260px;
+                right: -320px;
+                opacity: 0.7;
+            }
 
-            nav .nav-inner { padding: 0 1rem; gap: 0.8rem; }
-            nav ul a { font-size: 0.7rem; padding: 0.3rem 0.5rem; }
+            section { padding-top: 3rem; }
 
-            .container { padding: 0 1.1rem 3rem; }
+            .row {
+                grid-template-columns: 1fr;
+                gap: 0.15rem;
+                padding: 0.9rem 0.5rem;
+            }
 
-            section { padding: 2.4rem 0 0.6rem; }
-            section h2 { font-size: 1.4rem; }
-
-            .software-grid { grid-template-columns: 1fr; }
-
-            .pub, .talk { padding: 1rem 1.1rem 1rem 1.3rem; }
+            .row .yr { padding-top: 0; }
         }
     </style>
 </head>
 <body>
 
-<nav>
-    <div class="nav-inner">
-        <a class="monogram" href="#about">G.&thinsp;Budel</a>
-        <ul>
-            <li><a href="#publications">Publications</a></li>
-            <li><a href="#working-papers">Working&nbsp;Papers</a></li>
-            <li><a href="#thesis">Thesis</a></li>
-            <li><a href="#presentations">Talks</a></li>
-            <li><a href="#software">Software</a></li>
-            <li><a href="#experience">Experience</a></li>
-            <li><a href="#education">Education</a></li>
+<div id="progress" aria-hidden="true"></div>
+<svg id="disk" viewBox="-320 -320 640 640" aria-hidden="true"></svg>
+
+<div class="layout">
+
+    <!-- Sidebar -->
+    <aside id="about">
+        <img src="profile.png" alt="Gabriel Budel">
+        <h1>Gabriel <span class="surname">Budel</span></h1>
+        <div class="kicker">Applied Scientist<br>AI &amp; Network Science</div>
+
+        <div class="contact">
+            <a href="mailto:g.j.a.budel@gmail.com">Email</a>
+            <a href="https://scholar.google.com/citations?user=YcPZvyUAAAAJ&amp;hl=en&amp;oi=ao" target="_blank">Google Scholar</a>
+            <a href="https://orcid.org/0000-0003-0622-6492" target="_blank">ORCID</a>
+        </div>
+
+        <ul class="toc">
+            <li><a href="#publications"><span class="lbl">Publications</span></a></li>
+            <li><a href="#working-papers"><span class="lbl">Working Papers</span></a></li>
+            <li><a href="#thesis"><span class="lbl">Thesis</span></a></li>
+            <li><a href="#presentations"><span class="lbl">Talks</span></a></li>
+            <li><a href="#software"><span class="lbl">Software</span></a></li>
+            <li><a href="#experience"><span class="lbl">Experience</span></a></li>
+            <li><a href="#education"><span class="lbl">Education</span></a></li>
         </ul>
-    </div>
-</nav>
+    </aside>
 
-<div class="container">
+    <!-- Main -->
+    <main>
+        <div class="about">
+            <p>
+                I'm Gabriel Budel — also known as <strong>Gaby Budel</strong> — an Applied Scientist at <strong>Uber</strong> with a Ph.D. in Artificial Intelligence and Network Science from <strong>TU Delft</strong>.
+                My Ph.D. research focused on embeddings of complex networks and the roles of complementarity
+                and similarity in these embeddings, with applications to semantic networks and NLP. My interests
+                include artificial intelligence, machine learning, causal inference, hyperbolic graph
+                embeddings, deep learning, and NLP.
+            </p>
+        </div>
 
-    <!-- Hero -->
-    <div class="hero" id="about">
-        <canvas id="constellation" aria-hidden="true"></canvas>
-        <div class="header">
-            <div class="photo-wrapper">
-                <img src="profile.png" alt="Gabriel Budel">
+        <!-- Publications -->
+        <section id="publications" class="reveal">
+            <div class="section-head">
+                <h2>Publications</h2>
+                <span class="rule"></span>
             </div>
-            <div class="header-text">
-                <div class="kicker">Applied Scientist &middot; AI &amp; Network Science</div>
-                <h1>Gabriel Budel</h1>
-                <div class="links">
-                    <a href="mailto:g.j.a.budel@gmail.com">Email</a>
-                    <a href="https://scholar.google.com/citations?user=YcPZvyUAAAAJ&amp;hl=en&amp;oi=ao" target="_blank">Google Scholar</a>
-                    <a href="https://orcid.org/0000-0003-0622-6492" target="_blank">ORCID</a>
+
+            <div class="row">
+                <span class="yr">2024</span>
+                <div>
+                    <strong>Random hyperbolic graphs in <em>d</em> + 1 dimensions.</strong>
+                    Budel, G., M. Kitsak, R. Aldecoa, K. Zuev, and D. Krioukov.
+                    <em>Physical Review E</em> 109(5), 054131.
+                    <a href="https://doi.org/10.1103/PhysRevE.109.054131" target="_blank">doi</a>
+                    <a href="https://bitbucket.org/gbudel/rhg-generator/" target="_blank">code</a>
                 </div>
-                <p class="bio">
-                    I'm Gabriel Budel — also known as <strong>Gaby Budel</strong> — an Applied Scientist at <strong>Uber</strong> with a Ph.D. in Artificial Intelligence and Network Science from <strong>TU Delft</strong>.
-                    My Ph.D. research focused on embeddings of complex networks and the roles of complementarity
-                    and similarity in these embeddings, with applications to semantic networks and NLP. My interests
-                    include artificial intelligence, machine learning, causal inference, hyperbolic graph
-                    embeddings, deep learning, and NLP.
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Publications -->
-    <section id="publications" class="reveal">
-        <div class="section-head">
-            <span class="index">01</span>
-            <h2>Publications</h2>
-            <span class="rule"></span>
-        </div>
-
-        <p class="pub">
-            Budel, G., M. Kitsak, R. Aldecoa, K. Zuev, and D. Krioukov (2024).
-            Random hyperbolic graphs in <em>d</em> + 1 dimensions.
-            <em>Physical Review E</em> 109(5), 054131.
-            <a href="https://doi.org/10.1103/PhysRevE.109.054131" target="_blank">doi</a>
-        </p>
-
-        <p class="pub">
-            Budel, G., F. Frasincar, and D. Boekestijn (2024).
-            DBHC: Discrete Bayesian HMM Clustering.
-            <em>International Journal of Machine Learning and Cybernetics</em>, 1&ndash;16.
-            <a href="https://doi.org/10.1007/s13042-024-02102-w" target="_blank">doi</a>
-        </p>
-
-        <p class="pub">
-            Budel, G., Y. Jin, P. Van Mieghem, and M. Kitsak (2023).
-            Topological properties and organizing principles of semantic networks.
-            <em>Nature Scientific Reports</em> 13(1), 11728.
-            <a href="https://doi.org/10.1038/s41598-023-37294-8" target="_blank">doi</a>
-        </p>
-
-        <p class="pub">
-            Budel, G. and P. Van Mieghem (2020).
-            Detecting the number of clusters in a network.
-            <em>Journal of Complex Networks</em> 8(6), cnaa047.
-            <a href="https://doi.org/10.1093/comnet/cnaa047" target="_blank">doi</a>
-        </p>
-
-        <p class="pub">
-            Budel, G., L. Hoogenboom, W. Kastrop, N. Reniers, and F. Frasincar (2018).
-            Predicting user flight preferences in an airline E-shop.
-            In: Mikkonen T., Klamma R., Hern&aacute;ndez J. (eds)
-            <em>Web Engineering. ICWE 2018. Lecture Notes in Computer Science</em>, vol 10845. Springer, Cham.
-            <a href="https://doi.org/10.1007/978-3-319-91662-0_19" target="_blank">doi</a>
-        </p>
-    </section>
-
-    <!-- Working Papers -->
-    <section id="working-papers" class="reveal">
-        <div class="section-head">
-            <span class="index">02</span>
-            <h2>Working Papers</h2>
-            <span class="rule"></span>
-        </div>
-
-        <p class="pub">
-            Budel, G. and M. Kitsak (2026).
-            Complementarity in Complex Networks.
-            <a href="https://arxiv.org/abs/2003.06665" target="_blank">arXiv:2003.06665</a>
-        </p>
-
-        <p class="pub">
-            Tjepkema, M., G. Budel, and R.E. Kooij (2026).
-            How science gets by with a little help from the Beatles: Detecting cultural wordplay in scientific literature using large language models.
-        </p>
-    </section>
-
-    <!-- Ph.D. Thesis -->
-    <section id="thesis" class="reveal">
-        <div class="section-head">
-            <span class="index">03</span>
-            <h2>Ph.D. Thesis</h2>
-            <span class="rule"></span>
-        </div>
-
-        <p class="pub">
-            Budel, G.J.A. (2024).
-            <em>Complementarity and Similarity in Complex Networks</em>.
-            <a href="https://doi.org/10.4233/uuid:404db306-a85f-46ac-80d0-ba2a4f24a26e" target="_blank">doi</a>
-        </p>
-    </section>
-
-    <!-- Presentations -->
-    <section id="presentations" class="reveal">
-        <div class="section-head">
-            <span class="index">04</span>
-            <h2>Presentations</h2>
-            <span class="rule"></span>
-        </div>
-
-        <p class="talk">
-            <strong>Complementarity vs. Similarity in Semantic Networks</strong>
-            <span class="venue">Regular talk at NetSci 2023, Vienna, Austria, July 2023.</span>
-        </p>
-
-        <p class="talk">
-            <strong>Random Hyperbolic Graphs in <em>d</em> + 1 Dimensions</strong>
-            <span class="venue">Regular talk at the 10th International Conference on Complex Networks and their Applications, Madrid, Spain, December 2021.</span>
-        </p>
-
-        <p class="talk">
-            <strong>Predicting User Flight Preferences in an Airline E-Shop</strong>
-            <span class="venue">Full paper at the 18th International Conference on Web Engineering 2018, C&aacute;ceres, Spain, June 2018.</span>
-        </p>
-    </section>
-
-    <!-- Software -->
-    <section id="software" class="reveal">
-        <div class="section-head">
-            <span class="index">05</span>
-            <h2>Software</h2>
-            <span class="rule"></span>
-        </div>
-
-        <div class="software-grid">
-            <div class="software-item">
-                <strong>Complementarity-based HyperLink Embedder</strong>
-                <div class="software-meta">Budel, G. and M. Kitsak (2025)</div>
-                <a href="https://bitbucket.org/gbudel/complementarity_hyperlink/" target="_blank">bitbucket.org/gbudel/complementarity_hyperlink</a>
             </div>
 
-            <div class="software-item">
-                <strong>RHG Generator</strong>
-                <div class="software-meta">Budel, G. and M. Kitsak (2022)</div>
-                <a href="https://bitbucket.org/gbudel/rhg-generator/" target="_blank">bitbucket.org/gbudel/rhg-generator</a>
+            <div class="row">
+                <span class="yr">2024</span>
+                <div>
+                    <strong>DBHC: Discrete Bayesian HMM Clustering.</strong>
+                    Budel, G., F. Frasincar, and D. Boekestijn.
+                    <em>International Journal of Machine Learning and Cybernetics</em>, 1&ndash;16.
+                    <a href="https://doi.org/10.1007/s13042-024-02102-w" target="_blank">doi</a>
+                    <a href="https://cran.r-project.org/web/packages/DBHC/" target="_blank">code</a>
+                </div>
             </div>
 
-            <div class="software-item">
-                <strong>DBHC</strong>
-                <div class="software-meta">Budel, G. and F. Frasincar (2018)</div>
-                <a href="https://cran.r-project.org/web/packages/DBHC/" target="_blank">cran.r-project.org/web/packages/DBHC</a>
+            <div class="row">
+                <span class="yr">2023</span>
+                <div>
+                    <strong>Topological properties and organizing principles of semantic networks.</strong>
+                    Budel, G., Y. Jin, P. Van Mieghem, and M. Kitsak.
+                    <em>Nature Scientific Reports</em> 13(1), 11728.
+                    <a href="https://doi.org/10.1038/s41598-023-37294-8" target="_blank">doi</a>
+                </div>
             </div>
 
-            <div class="software-item">
-                <strong>FX Trading NEAT</strong>
-                <div class="software-meta">Budel, G. (2018)</div>
-                <a href="https://github.com/gabybudel/FXTradingNEAT" target="_blank">github.com/gabybudel/FXTradingNEAT</a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Experience -->
-    <section id="experience" class="reveal">
-        <div class="section-head">
-            <span class="index">06</span>
-            <h2>Experience</h2>
-            <span class="rule"></span>
-        </div>
-
-        <div class="edu-list">
-            <div class="edu-item">
-                <span class="degree">Scientist</span><br>
-                <span class="institution">Uber, Amsterdam, Netherlands, Nov 2025 &ndash; Present</span>
+            <div class="row">
+                <span class="yr">2020</span>
+                <div>
+                    <strong>Detecting the number of clusters in a network.</strong>
+                    Budel, G. and P. Van Mieghem.
+                    <em>Journal of Complex Networks</em> 8(6), cnaa047.
+                    <a href="https://doi.org/10.1093/comnet/cnaa047" target="_blank">doi</a>
+                </div>
             </div>
 
-            <div class="edu-item">
-                <span class="degree">Data Scientist</span><br>
-                <span class="institution">KPN, Amsterdam, Netherlands, Dec 2023 &ndash; Oct 2025</span>
+            <div class="row">
+                <span class="yr">2018</span>
+                <div>
+                    <strong>Predicting user flight preferences in an airline E-shop.</strong>
+                    Budel, G., L. Hoogenboom, W. Kastrop, N. Reniers, and F. Frasincar.
+                    In: Mikkonen T., Klamma R., Hern&aacute;ndez J. (eds)
+                    <em>Web Engineering. ICWE 2018. Lecture Notes in Computer Science</em>, vol 10845. Springer, Cham.
+                    <a href="https://doi.org/10.1007/978-3-319-91662-0_19" target="_blank">doi</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Working Papers -->
+        <section id="working-papers" class="reveal">
+            <div class="section-head">
+                <h2>Working Papers</h2>
+                <span class="rule"></span>
             </div>
 
-            <div class="edu-item">
-                <span class="degree">Ph.D. Researcher</span><br>
-                <span class="institution">Technische Universiteit Delft, Delft, Netherlands, Aug 2019 &ndash; Oct 2023</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- Education -->
-    <section id="education" class="reveal">
-        <div class="section-head">
-            <span class="index">07</span>
-            <h2>Education</h2>
-            <span class="rule"></span>
-        </div>
-
-        <div class="edu-list">
-            <div class="edu-item">
-                <span class="degree">Ph.D. in Artificial Intelligence and Network Science</span><br>
-                <span class="institution">Delft University of Technology, 2019 &ndash; 2024</span><br>
-                <span class="detail">In collaboration with KPN in the NExTWORKx program</span>
+            <div class="row">
+                <span class="yr">2026</span>
+                <div>
+                    <strong>Complementarity in Complex Networks.</strong>
+                    Budel, G. and M. Kitsak.
+                    <a href="https://arxiv.org/abs/2003.06665" target="_blank">arXiv:2003.06665</a>
+                    <a href="https://bitbucket.org/gbudel/complementarity_hyperlink/" target="_blank">code</a>
+                </div>
             </div>
 
-            <div class="edu-item">
-                <span class="degree">Advanced Language Program Mandarin Chinese</span> <span class="detail">(non-degree)</span><br>
-                <span class="institution">Fudan University, Shanghai, China, 2018 &ndash; 2019</span>
+            <div class="row">
+                <span class="yr">2026</span>
+                <div>
+                    <strong>How science gets by with a little help from the Beatles: Detecting cultural wordplay in scientific literature using large language models.</strong>
+                    Tjepkema, M., G. Budel, and R.E. Kooij.
+                </div>
+            </div>
+        </section>
+
+        <!-- Ph.D. Thesis -->
+        <section id="thesis" class="reveal">
+            <div class="section-head">
+                <h2>Ph.D. Thesis</h2>
+                <span class="rule"></span>
             </div>
 
-            <div class="edu-item">
-                <span class="degree">M.Sc. in Finance &amp; Investments</span><br>
-                <span class="institution">Rotterdam School of Management, 2017 &ndash; 2018</span>
+            <div class="row">
+                <span class="yr">2024</span>
+                <div>
+                    <strong><em>Complementarity and Similarity in Complex Networks</em>.</strong>
+                    Budel, G.J.A.
+                    <a href="https://doi.org/10.4233/uuid:404db306-a85f-46ac-80d0-ba2a4f24a26e" target="_blank">doi</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Presentations -->
+        <section id="presentations" class="reveal">
+            <div class="section-head">
+                <h2>Presentations</h2>
+                <span class="rule"></span>
             </div>
 
-            <div class="edu-item">
-                <span class="degree">M.Sc. in Econometrics &amp; Management Science</span><br>
-                <span class="institution">Erasmus University Rotterdam, 2016 &ndash; 2018</span><br>
-                <span class="detail">Specialization in Business Analytics &amp; Quantitative Marketing</span>
+            <div class="row">
+                <span class="yr">2023</span>
+                <div>
+                    <strong>Complementarity vs. Similarity in Semantic Networks</strong>
+                    <span class="meta">Regular talk at NetSci 2023, Vienna, Austria, July 2023.</span>
+                </div>
             </div>
 
-            <div class="edu-item">
-                <span class="degree">B.Sc. in Econometrics &amp; Operations Research</span><br>
-                <span class="institution">Erasmus University Rotterdam, 2013 &ndash; 2016</span><br>
-                <span class="detail">Major in Business Analytics &amp; Quantitative Marketing</span>
+            <div class="row">
+                <span class="yr">2021</span>
+                <div>
+                    <strong>Random Hyperbolic Graphs in <em>d</em> + 1 Dimensions</strong>
+                    <span class="meta">Regular talk at the 10th International Conference on Complex Networks and their Applications, Madrid, Spain, December 2021.</span>
+                </div>
             </div>
-        </div>
-    </section>
+
+            <div class="row">
+                <span class="yr">2018</span>
+                <div>
+                    <strong>Predicting User Flight Preferences in an Airline E-Shop</strong>
+                    <span class="meta">Full paper at the 18th International Conference on Web Engineering 2018, C&aacute;ceres, Spain, June 2018.</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Software -->
+        <section id="software" class="reveal">
+            <div class="section-head">
+                <h2>Software</h2>
+                <span class="rule"></span>
+            </div>
+
+            <div class="row">
+                <span class="yr">2025</span>
+                <div>
+                    <strong>Complementarity-based HyperLink Embedder</strong>
+                    <span class="meta">Budel, G. and M. Kitsak</span>
+                    <a href="https://bitbucket.org/gbudel/complementarity_hyperlink/" target="_blank">bitbucket</a>
+                </div>
+            </div>
+
+            <div class="row">
+                <span class="yr">2022</span>
+                <div>
+                    <strong>RHG Generator</strong>
+                    <span class="meta">Budel, G. and M. Kitsak</span>
+                    <a href="https://bitbucket.org/gbudel/rhg-generator/" target="_blank">bitbucket</a>
+                </div>
+            </div>
+
+            <div class="row">
+                <span class="yr">2018</span>
+                <div>
+                    <strong>DBHC</strong>
+                    <span class="meta">Budel, G. and F. Frasincar &middot; R package</span>
+                    <a href="https://cran.r-project.org/web/packages/DBHC/" target="_blank">cran</a>
+                </div>
+            </div>
+
+            <div class="row">
+                <span class="yr">2018</span>
+                <div>
+                    <strong>FX Trading NEAT</strong>
+                    <span class="meta">Budel, G.</span>
+                    <a href="https://github.com/gabybudel/FXTradingNEAT" target="_blank">github</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience -->
+        <section id="experience" class="reveal">
+            <div class="section-head">
+                <h2>Experience</h2>
+                <span class="rule"></span>
+            </div>
+
+            <div class="row">
+                <span class="yr">2025&ndash;</span>
+                <div>
+                    <strong>Scientist</strong>
+                    <span class="meta">Uber, Amsterdam, Netherlands, Nov 2025 &ndash; Present</span>
+                </div>
+            </div>
+
+            <div class="row">
+                <span class="yr">2023&ndash;25</span>
+                <div>
+                    <strong>Data Scientist</strong>
+                    <span class="meta">KPN, Amsterdam, Netherlands, Dec 2023 &ndash; Oct 2025</span>
+                </div>
+            </div>
+
+            <div class="row">
+                <span class="yr">2019&ndash;23</span>
+                <div>
+                    <strong>Ph.D. Researcher</strong>
+                    <span class="meta">Technische Universiteit Delft, Delft, Netherlands, Aug 2019 &ndash; Oct 2023</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education -->
+        <section id="education" class="reveal">
+            <div class="section-head">
+                <h2>Education</h2>
+                <span class="rule"></span>
+            </div>
+
+            <div class="row">
+                <span class="yr">2019&ndash;24</span>
+                <div>
+                    <strong>Ph.D. in Artificial Intelligence and Network Science</strong>
+                    <span class="meta">Delft University of Technology &middot; In collaboration with KPN in the NExTWORKx program</span>
+                </div>
+            </div>
+
+            <div class="row">
+                <span class="yr">2018&ndash;19</span>
+                <div>
+                    <strong>Advanced Language Program Mandarin Chinese</strong>
+                    <span class="meta">Fudan University, Shanghai, China &middot; non-degree</span>
+                </div>
+            </div>
+
+            <div class="row">
+                <span class="yr">2017&ndash;18</span>
+                <div>
+                    <strong>M.Sc. in Finance &amp; Investments</strong>
+                    <span class="meta">Rotterdam School of Management</span>
+                </div>
+            </div>
+
+            <div class="row">
+                <span class="yr">2016&ndash;18</span>
+                <div>
+                    <strong>M.Sc. in Econometrics &amp; Management Science</strong>
+                    <span class="meta">Erasmus University Rotterdam &middot; Specialization in Business Analytics &amp; Quantitative Marketing</span>
+                </div>
+            </div>
+
+            <div class="row">
+                <span class="yr">2013&ndash;16</span>
+                <div>
+                    <strong>B.Sc. in Econometrics &amp; Operations Research</strong>
+                    <span class="meta">Erasmus University Rotterdam &middot; Major in Business Analytics &amp; Quantitative Marketing</span>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <footer>
         <span class="sig">Gabriel Budel</span>
-        <span>Complementarity &amp; similarity in complex networks</span>
     </footer>
 
 </div>
 
 <script>
-    // Nav border accent on scroll
-    const nav = document.querySelector('nav');
-    window.addEventListener('scroll', () => {
-        nav.classList.toggle('scrolled', window.scrollY > 10);
-    }, { passive: true });
-
-    // Reveal sections on scroll
-    const observer = new IntersectionObserver((entries) => {
-        for (const e of entries) {
-            if (e.isIntersecting) {
-                e.target.classList.add('in');
-                observer.unobserve(e.target);
-            }
-        }
-    }, { threshold: 0.08 });
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-    // Constellation: drifting network with gilded nodes (a nod to network science)
+    // Poincaré-disk tessellation: a central {6,4} hexagon reflected across
+    // its geodesic edges (circle inversion). Cells crowd exponentially
+    // toward the boundary — hyperbolic volume growth made visible.
     (() => {
-        const canvas = document.getElementById('constellation');
-        if (!canvas || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        const svg = document.getElementById('disk');
+        const NS = 'http://www.w3.org/2000/svg';
+        const R = 300;
+        const P = 6, Q = 4;
+        const MAX_CELLS = 1500;
+        const RIM = 0.992;
+        const SAMPLES = 6;
 
-        const ctx = canvas.getContext('2d');
-        const LINK_DIST = 130;
-        let nodes = [], w = 0, h = 0, dpr = 1, raf;
+        const defs = document.createElementNS(NS, 'defs');
+        const clip = document.createElementNS(NS, 'clipPath');
+        clip.setAttribute('id', 'diskclip');
+        const cc = document.createElementNS(NS, 'circle');
+        cc.setAttribute('r', R);
+        clip.appendChild(cc);
+        defs.appendChild(clip);
+        svg.appendChild(defs);
 
-        function resize() {
-            const rect = canvas.parentElement.getBoundingClientRect();
-            w = window.innerWidth;
-            h = rect.height + 64;
-            dpr = Math.min(window.devicePixelRatio || 1, 2);
-            canvas.width = w * dpr;
-            canvas.height = h * dpr;
-            canvas.style.width = w + 'px';
-            canvas.style.height = h + 'px';
-            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        const g = document.createElementNS(NS, 'g');
+        g.setAttribute('clip-path', 'url(#diskclip)');
+        svg.appendChild(g);
 
-            const count = Math.min(90, Math.floor(w / 16));
-            nodes = Array.from({ length: count }, () => ({
-                x: Math.random() * w,
-                y: Math.random() * h,
-                vx: (Math.random() - 0.5) * 0.22,
-                vy: (Math.random() - 0.5) * 0.22,
-                r: 0.8 + Math.random() * 1.4,
-                gold: Math.random() < 0.3
-            }));
+        // Euclidean circumradius of the central {p,q} cell
+        const r0 = Math.sqrt(Math.cos(Math.PI / P + Math.PI / Q) / Math.cos(Math.PI / P - Math.PI / Q));
+        const base = [];
+        for (let k = 0; k < P; k++) {
+            const th = (2 * Math.PI * k) / P;
+            base.push([r0 * Math.cos(th), r0 * Math.sin(th)]);
         }
 
-        function tick() {
-            ctx.clearRect(0, 0, w, h);
+        // geodesic through A, B: the circle orthogonal to the unit circle
+        // (c·A = (1+|A|²)/2, c·B = (1+|B|²)/2), or null for a diameter
+        function geodesic(A, B) {
+            const det = A[0] * B[1] - A[1] * B[0];
+            if (Math.abs(det) < 1e-7) return null;
+            const ka = (1 + A[0] * A[0] + A[1] * A[1]) / 2;
+            const kb = (1 + B[0] * B[0] + B[1] * B[1]) / 2;
+            const cx = (ka * B[1] - kb * A[1]) / det;
+            const cy = (kb * A[0] - ka * B[0]) / det;
+            return { cx, cy, r2: cx * cx + cy * cy - 1 };
+        }
 
-            for (const n of nodes) {
-                n.x += n.vx; n.y += n.vy;
-                if (n.x < -10) n.x = w + 10; else if (n.x > w + 10) n.x = -10;
-                if (n.y < -10) n.y = h + 10; else if (n.y > h + 10) n.y = -10;
+        // reflect a point across the geodesic: circle inversion, or a
+        // mirror across the diameter with unit direction u
+        function reflect(pt, geo, u) {
+            if (!geo) {
+                const dot = pt[0] * u[0] + pt[1] * u[1];
+                return [2 * dot * u[0] - pt[0], 2 * dot * u[1] - pt[1]];
             }
+            const dx = pt[0] - geo.cx, dy = pt[1] - geo.cy;
+            const s = geo.r2 / (dx * dx + dy * dy);
+            return [geo.cx + s * dx, geo.cy + s * dy];
+        }
 
-            for (let i = 0; i < nodes.length; i++) {
-                for (let j = i + 1; j < nodes.length; j++) {
-                    const a = nodes[i], b = nodes[j];
-                    const dx = a.x - b.x, dy = a.y - b.y;
-                    const d2 = dx * dx + dy * dy;
-                    if (d2 < LINK_DIST * LINK_DIST) {
-                        const alpha = (1 - Math.sqrt(d2) / LINK_DIST) * 0.14;
-                        ctx.strokeStyle = (a.gold && b.gold)
-                            ? `rgba(216, 180, 120, ${alpha * 1.4})`
-                            : `rgba(141, 184, 232, ${alpha})`;
-                        ctx.lineWidth = 0.7;
-                        ctx.beginPath();
-                        ctx.moveTo(a.x, a.y);
-                        ctx.lineTo(b.x, b.y);
-                        ctx.stroke();
-                    }
+        // integer rounding so -0 and +0 share a key
+        function centroidKey(v) {
+            let x = 0, y = 0;
+            for (const p of v) { x += p[0]; y += p[1]; }
+            return Math.round(x / v.length * 1e4) + ',' + Math.round(y / v.length * 1e4);
+        }
+
+        const seen = new Set([centroidKey(base)]);
+        const cells = [];
+        const queue = [{ v: base, parity: 0 }];
+
+        while (queue.length && cells.length < MAX_CELLS) {
+            const cell = queue.shift();
+            cells.push(cell);
+            for (let i = 0; i < P; i++) {
+                const A = cell.v[i], B = cell.v[(i + 1) % P];
+                const geo = geodesic(A, B);
+                const len = Math.hypot(B[0] - A[0], B[1] - A[1]);
+                const u = [(B[0] - A[0]) / len, (B[1] - A[1]) / len];
+                const nv = cell.v.map(p => reflect(p, geo, u));
+                const k = centroidKey(nv);
+                if (seen.has(k)) continue;
+                let cx = 0, cy = 0;
+                for (const p of nv) { cx += p[0]; cy += p[1]; }
+                if (Math.hypot(cx / P, cy / P) > RIM) continue;
+                seen.add(k);
+                queue.push({ v: nv, parity: 1 - cell.parity });
+            }
+        }
+
+        // trace each cell, sampling its geodesic edges
+        function edgePoints(A, B) {
+            const pts = [];
+            const geo = geodesic(A, B);
+            if (!geo) {
+                for (let t = 1; t <= SAMPLES; t++) {
+                    const s = t / SAMPLES;
+                    pts.push([A[0] + (B[0] - A[0]) * s, A[1] + (B[1] - A[1]) * s]);
+                }
+                return pts;
+            }
+            const rad = Math.sqrt(geo.r2);
+            const ta = Math.atan2(A[1] - geo.cy, A[0] - geo.cx);
+            let dt = Math.atan2(B[1] - geo.cy, B[0] - geo.cx) - ta;
+            while (dt > Math.PI) dt -= 2 * Math.PI;
+            while (dt < -Math.PI) dt += 2 * Math.PI;
+            for (let t = 1; t <= SAMPLES; t++) {
+                const th = ta + dt * t / SAMPLES;
+                pts.push([geo.cx + rad * Math.cos(th), geo.cy + rad * Math.sin(th)]);
+            }
+            return pts;
+        }
+
+        for (const cell of cells) {
+            let d = 'M ' + (cell.v[0][0] * R).toFixed(1) + ' ' + (cell.v[0][1] * R).toFixed(1);
+            for (let i = 0; i < P; i++) {
+                for (const pt of edgePoints(cell.v[i], cell.v[(i + 1) % P])) {
+                    d += ' L ' + (pt[0] * R).toFixed(1) + ' ' + (pt[1] * R).toFixed(1);
                 }
             }
-
-            for (const n of nodes) {
-                ctx.fillStyle = n.gold ? 'rgba(239, 214, 164, 0.55)' : 'rgba(141, 184, 232, 0.35)';
-                ctx.beginPath();
-                ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-                ctx.fill();
-            }
-
-            raf = requestAnimationFrame(tick);
+            const path = document.createElementNS(NS, 'path');
+            path.setAttribute('d', d + ' Z');
+            path.setAttribute('fill', 'none');
+            path.setAttribute('stroke', 'rgba(154, 116, 52, 0.13)');
+            path.setAttribute('stroke-width', '0.6');
+            g.appendChild(path);
         }
 
-        // Pause when the hero is off-screen to save battery
-        const heroWatch = new IntersectionObserver(([e]) => {
-            if (e.isIntersecting) { cancelAnimationFrame(raf); tick(); }
-            else cancelAnimationFrame(raf);
+        const boundary = document.createElementNS(NS, 'circle');
+        boundary.setAttribute('r', R);
+        boundary.setAttribute('fill', 'none');
+        boundary.setAttribute('stroke', 'rgba(154, 116, 52, 0.28)');
+        boundary.setAttribute('stroke-width', '1');
+        svg.appendChild(boundary);
+    })();
+
+    // Scroll: progress hairline + a barely-perceptible turn of the disk.
+    // The disk only moves when you do.
+    (() => {
+        const progress = document.getElementById('progress');
+        const disk = document.getElementById('disk');
+        const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        function onScroll() {
+            const max = document.documentElement.scrollHeight - window.innerHeight;
+            const p = max > 0 ? window.scrollY / max : 0;
+            progress.style.width = (p * 100) + '%';
+            if (!reduced) disk.style.transform = `rotate(${p * 24}deg)`;
+        }
+
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+    })();
+
+    // Reveal sections + scrollspy for the sidebar table of contents
+    (() => {
+        const reveal = new IntersectionObserver((entries) => {
+            for (const e of entries) {
+                if (e.isIntersecting) {
+                    e.target.classList.add('in');
+                    reveal.unobserve(e.target);
+                }
+            }
+        }, { threshold: 0.08 });
+        document.querySelectorAll('.reveal').forEach(el => reveal.observe(el));
+
+        const links = new Map();
+        document.querySelectorAll('.toc a').forEach(a => {
+            links.set(a.getAttribute('href').slice(1), a);
         });
-        heroWatch.observe(canvas.parentElement);
 
-        let resizeTimer;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(resize, 150);
-        }, { passive: true });
+        const spy = new IntersectionObserver((entries) => {
+            for (const e of entries) {
+                const link = links.get(e.target.id);
+                if (!link) continue;
+                if (e.isIntersecting) {
+                    links.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                }
+            }
+        }, { rootMargin: '-30% 0px -55% 0px' });
 
-        resize();
-        tick();
+        document.querySelectorAll('main section').forEach(s => spy.observe(s));
     })();
 </script>
 
