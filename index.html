@@ -125,7 +125,8 @@
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
         }
 
-        /* Poincaré disk — tessellation generated once at load, static */
+        /* Poincaré disk — tessellation drawn once to a canvas at load;
+           the canvas bitmap turns faintly with scroll (composited) */
         #disk {
             position: fixed;
             top: -190px;
@@ -134,6 +135,7 @@
             height: 760px;
             z-index: -2;
             pointer-events: none;
+            will-change: transform;
         }
 
         /* Gold hairline tracking scroll progress */
@@ -497,7 +499,7 @@
 <body>
 
 <div id="progress" aria-hidden="true"></div>
-<svg id="disk" viewBox="-320 -320 640 640" aria-hidden="true"></svg>
+<canvas id="disk" aria-hidden="true"></canvas>
 
 <div class="layout">
 
@@ -810,28 +812,23 @@
 <script>
     // Poincaré-disk tessellation: a central {6,4} hexagon reflected across
     // its geodesic edges (circle inversion). Cells crowd exponentially
-    // toward the boundary — hyperbolic volume growth made visible.
+    // toward the boundary. Rendered once into a canvas bitmap so the
+    // scroll-linked rotation only spins a cached GPU layer — never repaints.
     (() => {
-        const svg = document.getElementById('disk');
-        const NS = 'http://www.w3.org/2000/svg';
-        const R = 300;
+        const canvas = document.getElementById('disk');
+        const SIZE = 760;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = SIZE * dpr;
+        canvas.height = SIZE * dpr;
+        const ctx = canvas.getContext('2d');
+        ctx.scale(dpr, dpr);
+        ctx.translate(SIZE / 2, SIZE / 2);
+
+        const S = 300 * (SIZE / 640);   // unit-disk radius in px (matches the old viewBox scale)
         const P = 6, Q = 4;
         const MAX_CELLS = 1500;
         const RIM = 0.992;
         const SAMPLES = 6;
-
-        const defs = document.createElementNS(NS, 'defs');
-        const clip = document.createElementNS(NS, 'clipPath');
-        clip.setAttribute('id', 'diskclip');
-        const cc = document.createElementNS(NS, 'circle');
-        cc.setAttribute('r', R);
-        clip.appendChild(cc);
-        defs.appendChild(clip);
-        svg.appendChild(defs);
-
-        const g = document.createElementNS(NS, 'g');
-        g.setAttribute('clip-path', 'url(#diskclip)');
-        svg.appendChild(g);
 
         // Euclidean circumradius of the central {p,q} cell
         const r0 = Math.sqrt(Math.cos(Math.PI / P + Math.PI / Q) / Math.cos(Math.PI / P - Math.PI / Q));
@@ -874,7 +871,7 @@
 
         const seen = new Set([centroidKey(base)]);
         const cells = [];
-        const queue = [{ v: base, parity: 0 }];
+        const queue = [{ v: base }];
 
         while (queue.length && cells.length < MAX_CELLS) {
             const cell = queue.shift();
@@ -891,7 +888,7 @@
                 for (const p of nv) { cx += p[0]; cy += p[1]; }
                 if (Math.hypot(cx / P, cy / P) > RIM) continue;
                 seen.add(k);
-                queue.push({ v: nv, parity: 1 - cell.parity });
+                queue.push({ v: nv });
             }
         }
 
@@ -918,33 +915,38 @@
             return pts;
         }
 
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(0, 0, S, 0, 2 * Math.PI);
+        ctx.clip();
+        ctx.strokeStyle = 'rgba(154, 116, 52, 0.13)';
+        ctx.lineWidth = 0.7;
         for (const cell of cells) {
-            let d = 'M ' + (cell.v[0][0] * R).toFixed(1) + ' ' + (cell.v[0][1] * R).toFixed(1);
+            ctx.beginPath();
+            ctx.moveTo(cell.v[0][0] * S, cell.v[0][1] * S);
             for (let i = 0; i < P; i++) {
                 for (const pt of edgePoints(cell.v[i], cell.v[(i + 1) % P])) {
-                    d += ' L ' + (pt[0] * R).toFixed(1) + ' ' + (pt[1] * R).toFixed(1);
+                    ctx.lineTo(pt[0] * S, pt[1] * S);
                 }
             }
-            const path = document.createElementNS(NS, 'path');
-            path.setAttribute('d', d + ' Z');
-            path.setAttribute('fill', 'none');
-            path.setAttribute('stroke', 'rgba(154, 116, 52, 0.13)');
-            path.setAttribute('stroke-width', '0.6');
-            g.appendChild(path);
+            ctx.closePath();
+            ctx.stroke();
         }
+        ctx.restore();
 
-        const boundary = document.createElementNS(NS, 'circle');
-        boundary.setAttribute('r', R);
-        boundary.setAttribute('fill', 'none');
-        boundary.setAttribute('stroke', 'rgba(154, 116, 52, 0.28)');
-        boundary.setAttribute('stroke-width', '1');
-        svg.appendChild(boundary);
+        ctx.strokeStyle = 'rgba(154, 116, 52, 0.28)';
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.arc(0, 0, S, 0, 2 * Math.PI);
+        ctx.stroke();
     })();
 
-    // Scroll: gold progress hairline, batched to animation frames and
-    // composited (scaleX only) — nothing else repaints while scrolling.
+    // Scroll: gold progress hairline + the disk's slow turn. Both are
+    // composited transforms on cached layers — nothing repaints while scrolling.
     (() => {
         const progress = document.getElementById('progress');
+        const disk = document.getElementById('disk');
+        const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
         let ticking = false;
 
         function update() {
@@ -952,6 +954,7 @@
             const max = document.documentElement.scrollHeight - window.innerHeight;
             const p = max > 0 ? window.scrollY / max : 0;
             progress.style.transform = `scaleX(${p})`;
+            if (!reduced) disk.style.transform = `rotate(${p * 24}deg)`;
         }
 
         window.addEventListener('scroll', () => {
