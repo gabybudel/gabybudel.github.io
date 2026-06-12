@@ -156,7 +156,7 @@
             display: grid;
             grid-template-columns: 300px 1fr;
             gap: 5rem;
-            padding: 5rem 2rem 5rem;
+            padding: 5rem 2rem 0;
             align-items: start;
         }
 
@@ -418,8 +418,13 @@
         }
 
         /* ============ FOOTER ============ */
+        .layout-footer {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem 5rem;
+        }
+
         footer {
-            grid-column: 1 / -1;
             margin-top: 4rem;
             padding-top: 2rem;
             border-top: 1px solid var(--hairline);
@@ -456,8 +461,10 @@
             .layout {
                 grid-template-columns: 1fr;
                 gap: 2.5rem;
-                padding: 3rem 1.2rem 3.5rem;
+                padding: 3rem 1.2rem 0;
             }
+
+            .layout-footer { padding: 0 1.2rem 3.5rem; }
 
             aside { position: static; }
 
@@ -790,10 +797,12 @@
         </section>
     </main>
 
+</div>
+
+<div class="layout-footer">
     <footer>
         <span class="sig">Gabriel Budel</span>
     </footer>
-
 </div>
 
 <script>
