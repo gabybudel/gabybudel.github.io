@@ -143,7 +143,10 @@
             top: 0;
             left: 0;
             height: 2px;
-            width: 0;
+            width: 100%;
+            transform: scaleX(0);
+            transform-origin: 0 0;
+            will-change: transform;
             z-index: 200;
             background: linear-gradient(90deg, var(--gold-dim), var(--gold-bright));
             box-shadow: 0 0 8px rgba(124, 90, 31, 0.35);
@@ -940,21 +943,33 @@
     })();
 
     // Scroll: progress hairline + a barely-perceptible turn of the disk.
-    // The disk only moves when you do.
+    // Work is batched to animation frames and uses composited transforms only;
+    // the disk angle is quantized so the SVG isn't re-rasterized every frame.
     (() => {
         const progress = document.getElementById('progress');
         const disk = document.getElementById('disk');
         const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let ticking = false;
+        let lastAngle = null;
 
-        function onScroll() {
+        function update() {
+            ticking = false;
             const max = document.documentElement.scrollHeight - window.innerHeight;
             const p = max > 0 ? window.scrollY / max : 0;
-            progress.style.width = (p * 100) + '%';
-            if (!reduced) disk.style.transform = `rotate(${p * 24}deg)`;
+            progress.style.transform = `scaleX(${p})`;
+            if (!reduced) {
+                const angle = Math.round(p * 24 / 0.25) * 0.25;
+                if (angle !== lastAngle) {
+                    lastAngle = angle;
+                    disk.style.transform = `rotate(${angle}deg)`;
+                }
+            }
         }
 
-        window.addEventListener('scroll', onScroll, { passive: true });
-        onScroll();
+        window.addEventListener('scroll', () => {
+            if (!ticking) { ticking = true; requestAnimationFrame(update); }
+        }, { passive: true });
+        update();
     })();
 
     // Reveal sections + scrollspy for the sidebar table of contents
