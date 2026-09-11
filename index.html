@@ -404,6 +404,30 @@
             border-color: var(--gold-dim);
         }
 
+        /* press mentions sit inline in a meta line, not as pills */
+        .row .meta a {
+            font-family: inherit;
+            font-size: inherit;
+            font-weight: inherit;
+            letter-spacing: normal;
+            color: var(--gold);
+            border: none;
+            border-radius: 0;
+            padding: 0;
+            background-color: transparent;
+            background-image: linear-gradient(90deg, var(--gold-dim), var(--gold-dim));
+            background-size: 100% 1px;
+            background-repeat: no-repeat;
+            background-position: 0 100%;
+            transition: color 0.3s ease, background-image 0.3s ease;
+        }
+
+        .row .meta a:hover {
+            color: var(--gold-bright);
+            background-color: transparent;
+            background-image: linear-gradient(90deg, var(--gold-bright), var(--gold-bright));
+        }
+
         /* ============ REVEAL ============ */
         .reveal {
             opacity: 0;
@@ -554,6 +578,16 @@
                     <a href="https://doi.org/10.1371/journal.pone.0356147" target="_blank">doi</a>
                     <a href="https://github.com/gabybudel/beatles-scientific-wordplay" target="_blank">code</a>
                     <a href="https://github.com/gabybudel/beatles-scientific-wordplay/tree/main/data/shared" target="_blank">data</a>
+                    <span class="meta"><em>Featured in:</em>
+                        <a href="https://www.science.org/content/article/need-help-writing-paper-title-all-you-need-beatles" target="_blank">Science</a>,
+                        <a href="https://arstechnica.com/science/2026/09/scientists-really-love-to-reference-the-beatles-in-their-work/" target="_blank">Ars Technica</a>,
+                        <a href="https://www.timeshighereducation.com/news/want-catchy-paper-title-all-you-need-beatles-lyric" target="_blank">Times Higher Education</a>,
+                        <a href="https://www.handelsblatt.com/technik/forschung-innovation/popkultur-all-you-need-is-a-beatles-song-wie-forscher-hits-nutzen/100253747.html" target="_blank">Handelsblatt</a>,
+                        <a href="https://www.zeit.de/news/2026-09/11/all-you-need-is-a-beatles-song-wie-forscher-hits-nutzen" target="_blank">Die Zeit</a>,
+                        <a href="https://www.volkskrant.nl/wetenschap/let-it-bee-nederlandse-onderzoekers-vinden-duizenden-verwijzingen-naar-the-beatles-in-wetenschappelijke-literatuur~b01eccc4/" target="_blank">de Volkskrant</a>,
+                        <a href="https://www.nrc.nl/nieuws/2026/09/09/the-beatles-zijn-here-there-and-everywhere-in-wetenschappelijk-onderzoek-a4936141" target="_blank">NRC</a>,
+                        <a href="https://science.orf.at/stories/3237220/" target="_blank">ORF</a>.
+                    </span>
                 </div>
             </div>
 
