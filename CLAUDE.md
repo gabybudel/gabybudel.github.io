@@ -29,9 +29,10 @@ _config.yml      — Jekyll config; excludes CLAUDE.md from the published site
 - Headings are upright; italic is reserved for journal and thesis titles
 - "Gilded paper" light theme; CSS variables in `:root`: warm off-white background (`#f6f2ea`), ochre gold accent (`#9a7434`), steel blue (`#3f6fa3`)
 - Layout: sticky sidebar (name, contact, scrollspy TOC) + ledger-style rows with a year column
-- Backdrop: genuine `{6,4}` Poincaré-disk tessellation (hexagons reflected via circle inversion), drawn once by inline JS at load; turns faintly with scroll (not under reduced motion)
+- Backdrop: genuine `{6,4}` Poincaré-disk tessellation (hexagons reflected via circle inversion), drawn once by inline JS at load; turns up to 24° over the page via a CSS scroll-driven animation (script fallback with easing for older browsers; none under reduced motion)
 - Keep it restrained: no drop caps, progress bars, glows, gradients, or load/scroll animations. Interaction is limited to hover colour changes on rows and links; content is visible without JavaScript
 - Publications with companion code get a `code` pill link next to the `doi` pill
+- Experience and Education get a timeline (vertical line + dot per entry); other sections don't, since they aren't sequences
 
 ## Analytics
 

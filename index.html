@@ -112,6 +112,20 @@
             will-change: transform;
         }
 
+        /* The disk turns with scroll. Where the browser supports scroll-driven
+           animations this runs off the main thread, in step with the page;
+           otherwise the script at the end of the page does it. */
+        @keyframes disk-turn { to { transform: rotate(24deg); } }
+
+        @media (prefers-reduced-motion: no-preference) {
+            @supports (animation-timeline: scroll()) {
+                #disk {
+                    animation: disk-turn 1ms linear both;
+                    animation-timeline: scroll(root block);
+                }
+            }
+        }
+
         /* Layout */
         .layout {
             max-width: 1100px;
@@ -321,6 +335,44 @@
             background-image: linear-gradient(90deg, var(--gold-bright), var(--gold-bright));
         }
 
+        /* Timeline on the chronological sections */
+        #experience .row,
+        #education .row { position: relative; border-bottom: none; }
+
+        #experience .row::before,
+        #education .row::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: calc(0.4rem + 76px);
+            width: 1px;
+            background: var(--gold-dim);
+        }
+
+        #experience .section-head + .row::before,
+        #education .section-head + .row::before { top: 1.8rem; }
+
+        #experience .row:last-child::before,
+        #education .row:last-child::before { bottom: auto; height: 1.8rem; }
+
+        #experience .row::after,
+        #education .row::after {
+            content: '';
+            position: absolute;
+            top: calc(1.8rem - 4.5px);
+            left: calc(0.4rem + 76px - 4px);
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--ink);
+            border: 1.5px solid var(--gold);
+            transition: background 0.35s ease;
+        }
+
+        #experience .row:hover::after,
+        #education .row:hover::after { background: var(--gold); }
+
         a:focus-visible {
             outline: 2px solid var(--gold);
             outline-offset: 2px;
@@ -387,6 +439,21 @@
             }
 
             .row .yr { padding-top: 0; }
+
+            #experience .row,
+            #education .row { padding-left: 1.7rem; }
+
+            #experience .row::before,
+            #education .row::before { left: 0.55rem; }
+
+            #experience .section-head + .row::before,
+            #education .section-head + .row::before { top: 1.55rem; }
+
+            #experience .row:last-child::before,
+            #education .row:last-child::before { height: 1.55rem; }
+
+            #experience .row::after,
+            #education .row::after { top: calc(1.55rem - 4.5px); left: calc(0.55rem - 4px); }
         }
     </style>
 </head>
@@ -846,23 +913,33 @@
         ctx.stroke();
     })();
 
-    // Turn the disk slightly as the page scrolls (skipped for reduced motion)
+    // Fallback for browsers without scroll-driven animations: follow the
+    // scroll position with easing, so mouse-wheel steps glide instead of jump
     (() => {
+        if (CSS.supports('animation-timeline: scroll()')) return;
         if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
         const disk = document.getElementById('disk');
-        let ticking = false;
+        let current = 0, target = 0, running = false;
 
-        function update() {
-            ticking = false;
+        function angle() {
             const max = document.documentElement.scrollHeight - window.innerHeight;
-            const p = max > 0 ? window.scrollY / max : 0;
-            disk.style.transform = `rotate(${p * 24}deg)`;
+            return max > 0 ? window.scrollY / max * 24 : 0;
+        }
+
+        function frame() {
+            current += (target - current) * 0.15;
+            if (Math.abs(target - current) < 0.01) { current = target; running = false; }
+            disk.style.transform = `rotate(${current}deg)`;
+            if (running) requestAnimationFrame(frame);
         }
 
         window.addEventListener('scroll', () => {
-            if (!ticking) { ticking = true; requestAnimationFrame(update); }
+            target = angle();
+            if (!running) { running = true; requestAnimationFrame(frame); }
         }, { passive: true });
-        update();
+
+        current = target = angle();
+        disk.style.transform = `rotate(${current}deg)`;
     })();
 
     // Scrollspy for the sidebar table of contents
