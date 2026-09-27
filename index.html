@@ -109,6 +109,7 @@
             height: 760px;
             z-index: -2;
             pointer-events: none;
+            will-change: transform;
         }
 
         /* Layout */
@@ -843,6 +844,25 @@
         ctx.beginPath();
         ctx.arc(0, 0, S, 0, 2 * Math.PI);
         ctx.stroke();
+    })();
+
+    // Turn the disk slightly as the page scrolls (skipped for reduced motion)
+    (() => {
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        const disk = document.getElementById('disk');
+        let ticking = false;
+
+        function update() {
+            ticking = false;
+            const max = document.documentElement.scrollHeight - window.innerHeight;
+            const p = max > 0 ? window.scrollY / max : 0;
+            disk.style.transform = `rotate(${p * 24}deg)`;
+        }
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) { ticking = true; requestAnimationFrame(update); }
+        }, { passive: true });
+        update();
     })();
 
     // Scrollspy for the sidebar table of contents
