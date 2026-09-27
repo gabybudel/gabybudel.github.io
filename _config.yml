@@ -1,0 +1,3 @@
+# Keep repository notes out of the published site.
+exclude:
+  - CLAUDE.md

@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="google-site-verification" content="5JvQj-VzD_I1uElzZ5oyMuTIjfEO1bHsrSX7P5CZ_Bc" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gabriel Budel (Gaby Budel) — Applied Scientist &amp; AI Researcher</title>
-    <meta name="description" content="Gabriel Budel, also known as Gaby Budel — Applied Scientist at Uber with a Ph.D. in AI and Network Science from TU Delft. Research on complex networks, graph embeddings, and machine learning.">
+    <title>Gabriel Budel (Gaby Budel) | Applied Scientist &amp; AI Researcher</title>
+    <meta name="description" content="Gabriel Budel, also known as Gaby Budel, is an Applied Scientist at Uber with a Ph.D. in AI and Network Science from TU Delft. Research on complex networks, graph embeddings, and machine learning.">
     <meta name="author" content="Gabriel Budel">
     <meta name="keywords" content="Gabriel Budel, Gaby Budel, network science, AI researcher, applied scientist, TU Delft, graph embeddings, complex networks, hyperbolic geometry, machine learning, NLP">
     <link rel="canonical" href="https://gabybudel.github.io/">
-    <meta property="og:title" content="Gabriel Budel (Gaby Budel) — Applied Scientist & AI Researcher">
-    <meta property="og:description" content="Gabriel Budel, also known as Gaby Budel — Applied Scientist at Uber with a Ph.D. in AI and Network Science from TU Delft.">
+    <meta property="og:title" content="Gabriel Budel (Gaby Budel) | Applied Scientist & AI Researcher">
+    <meta property="og:description" content="Gabriel Budel, also known as Gaby Budel, is an Applied Scientist at Uber with a Ph.D. in AI and Network Science from TU Delft.">
     <meta property="og:url" content="https://gabybudel.github.io/">
     <meta property="og:type" content="profile">
     <meta property="og:image" content="https://gabybudel.github.io/profile.png">
@@ -18,7 +18,7 @@
     <meta property="profile:first_name" content="Gabriel">
     <meta property="profile:last_name" content="Budel">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Gabriel Budel (Gaby Budel) — Applied Scientist & AI Researcher">
+    <meta name="twitter:title" content="Gabriel Budel (Gaby Budel) | Applied Scientist & AI Researcher">
     <meta name="twitter:description" content="Applied Scientist at Uber. Ph.D. in AI and Network Science from TU Delft. Research on complex networks, graph embeddings, and machine learning.">
     <meta name="twitter:image" content="https://gabybudel.github.io/profile.png">
     <script type="application/ld+json">
@@ -63,10 +63,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Hanken+Grotesk:ital,wght@0,300..600;1,300..600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        /* ============================================================
-           HYPERBOLIC ATLAS · V3 LIGHT — geodesics of the Poincaré disk,
-           a ledger of work, and a sidebar that keeps its place
-           ============================================================ */
         :root {
             --ink: #f6f2ea;
             --ink-2: #fdfbf6;
@@ -115,18 +111,7 @@
                 var(--ink);
         }
 
-        body::after {
-            content: '';
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            pointer-events: none;
-            opacity: 0.35;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
-        }
-
-        /* Poincaré disk — tessellation drawn once to a canvas at load;
-           the canvas bitmap turns faintly with scroll (composited) */
+        /* Poincaré disk backdrop, drawn by the script at the end of the page */
         #disk {
             position: fixed;
             top: -190px;
@@ -138,7 +123,7 @@
             will-change: transform;
         }
 
-        /* Gold hairline tracking scroll progress */
+        /* Scroll progress bar */
         #progress {
             position: fixed;
             top: 0;
@@ -153,7 +138,7 @@
             box-shadow: 0 0 8px rgba(124, 90, 31, 0.35);
         }
 
-        /* ============ LAYOUT ============ */
+        /* Layout */
         .layout {
             max-width: 1100px;
             margin: 0 auto;
@@ -164,7 +149,7 @@
             align-items: start;
         }
 
-        /* ============ SIDEBAR ============ */
+        /* Sidebar */
         aside {
             position: sticky;
             top: 5rem;
@@ -276,7 +261,7 @@
 
         aside .toc a.active .lbl::after { right: 0; }
 
-        /* ============ MAIN ============ */
+        /* Main */
         main { min-width: 0; }
 
         .about p {
@@ -324,7 +309,7 @@
             background: linear-gradient(90deg, var(--gold-faint), var(--hairline) 40%, transparent);
         }
 
-        /* ============ LEDGER ROWS ============ */
+        /* Rows */
         .row {
             display: grid;
             grid-template-columns: 76px 1fr;
@@ -351,7 +336,6 @@
 
         .row:hover { background: var(--surface); }
 
-        /* the year ignites */
         .row:hover .yr {
             color: var(--gold-bright);
             text-shadow: 0 0 14px rgba(124, 90, 31, 0.45);
@@ -367,7 +351,6 @@
             transition: background-size 0.5s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        /* a gold underline draws itself beneath the title */
         .row:hover strong { background-size: 100% 1px; }
 
         .row em {
@@ -404,7 +387,7 @@
             border-color: var(--gold-dim);
         }
 
-        /* press mentions sit inline in a meta line, not as pills */
+        /* Links inside a meta line are plain text links, not pills */
         .row .meta a {
             font-family: inherit;
             font-size: inherit;
@@ -428,7 +411,7 @@
             background-image: linear-gradient(90deg, var(--gold-bright), var(--gold-bright));
         }
 
-        /* ============ REVEAL ============ */
+        /* Reveal on scroll */
         .reveal {
             opacity: 0;
             transform: translateY(20px);
@@ -445,7 +428,7 @@
             to { opacity: 1; transform: none; }
         }
 
-        /* ============ FOOTER ============ */
+        /* Footer */
         .layout-footer {
             max-width: 1100px;
             margin: 0 auto;
@@ -484,7 +467,7 @@
             #disk { display: none; }
         }
 
-        /* ============ RESPONSIVE ============ */
+        /* Responsive */
         @media (max-width: 920px) {
             .layout {
                 grid-template-columns: 1fr;
@@ -554,7 +537,7 @@
     <main>
         <div class="about">
             <p>
-                I'm Gabriel Budel (also known as <strong>Gaby Budel</strong>), an Applied Scientist with a Ph.D. in Artificial Intelligence and Network Science from <strong>TU Delft</strong>.
+                I am Gabriel Budel (also known as <strong>Gaby Budel</strong>), an Applied Scientist with a Ph.D. in Artificial Intelligence and Network Science from <strong>TU Delft</strong>.
                 My Ph.D. research focused on embeddings of complex networks and the roles of complementarity
                 and similarity in these embeddings, with applications to semantic networks and NLP. My interests
                 include artificial intelligence, machine learning, causal inference, hyperbolic graph
@@ -847,10 +830,9 @@
 </div>
 
 <script>
-    // Poincaré-disk tessellation: a central {6,4} hexagon reflected across
-    // its geodesic edges (circle inversion). Cells crowd exponentially
-    // toward the boundary. Rendered once into a canvas bitmap so the
-    // scroll-linked rotation only spins a cached GPU layer — never repaints.
+    // {6,4} tessellation of the Poincaré disk: reflect a central hexagon
+    // across its edges (circle inversion), breadth-first. Drawn once to a
+    // canvas; scrolling only rotates it.
     (() => {
         const canvas = document.getElementById('disk');
         const SIZE = 760;
@@ -861,7 +843,7 @@
         ctx.scale(dpr, dpr);
         ctx.translate(SIZE / 2, SIZE / 2);
 
-        const S = 300 * (SIZE / 640);   // unit-disk radius in px (matches the old viewBox scale)
+        const S = 300 * (SIZE / 640);   // unit-disk radius in px
         const P = 6, Q = 4;
         const MAX_CELLS = 1500;
         const RIM = 0.992;
@@ -978,8 +960,7 @@
         ctx.stroke();
     })();
 
-    // Scroll: gold progress hairline + the disk's slow turn. Both are
-    // composited transforms on cached layers — nothing repaints while scrolling.
+    // Scroll progress bar and disk rotation
     (() => {
         const progress = document.getElementById('progress');
         const disk = document.getElementById('disk');
@@ -1032,9 +1013,7 @@
     })();
 </script>
 
-<!-- GoatCounter: cookieless, privacy-friendly pageview counts.
-     Replace "gabybudel" below if the GoatCounter site code differs.
-     The script skips localhost and file:// by default. -->
+<!-- GoatCounter analytics -->
 <script data-goatcounter="https://gabybudel.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 

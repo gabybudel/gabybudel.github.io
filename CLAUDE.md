@@ -11,6 +11,7 @@ profile.png      — headshot photo
 favicon.svg      — GB initials favicon
 robots.txt       — allows all crawlers, points to sitemap
 sitemap.xml      — single URL entry for the homepage
+_config.yml      — Jekyll config; excludes CLAUDE.md from the published site
 ```
 
 ## Goals
