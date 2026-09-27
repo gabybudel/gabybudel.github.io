@@ -61,7 +61,7 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Hanken+Grotesk:ital,wght@0,300..600;1,300..600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400..600;1,8..60,400..600&family=Hanken+Grotesk:ital,wght@0,300..600;1,300..600&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
             --ink: #f6f2ea;
@@ -77,7 +77,7 @@
             --ice: #3f6fa3;
             --hairline: rgba(44, 36, 24, 0.09);
             --hairline-strong: rgba(44, 36, 24, 0.16);
-            --font-display: 'Fraunces', Georgia, serif;
+            --font-display: 'Source Serif 4', Georgia, serif;
             --font-body: 'Hanken Grotesk', -apple-system, sans-serif;
             --font-mono: 'Spline Sans Mono', 'SF Mono', monospace;
         }
@@ -100,17 +100,6 @@
             overflow-x: hidden;
         }
 
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            z-index: -3;
-            background:
-                radial-gradient(ellipse 70% 60% at 85% 0%, rgba(63, 111, 163, 0.05), transparent 60%),
-                radial-gradient(ellipse 60% 50% at 0% 30%, rgba(154, 116, 52, 0.04), transparent 55%),
-                var(--ink);
-        }
-
         /* Poincaré disk backdrop, drawn by the script at the end of the page */
         #disk {
             position: fixed;
@@ -120,22 +109,6 @@
             height: 760px;
             z-index: -2;
             pointer-events: none;
-            will-change: transform;
-        }
-
-        /* Scroll progress bar */
-        #progress {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 2px;
-            width: 100%;
-            transform: scaleX(0);
-            transform-origin: 0 0;
-            will-change: transform;
-            z-index: 200;
-            background: linear-gradient(90deg, var(--gold-dim), var(--gold-bright));
-            box-shadow: 0 0 8px rgba(124, 90, 31, 0.35);
         }
 
         /* Layout */
@@ -161,35 +134,25 @@
             border-radius: 50%;
             object-fit: cover;
             border: 1px solid var(--hairline-strong);
-            box-shadow: 0 0 0 6px rgba(154, 116, 52, 0.05);
             margin-bottom: 1.4rem;
         }
 
         aside h1 {
             font-family: var(--font-display);
             font-size: 2.3rem;
-            font-weight: 420;
-            font-variation-settings: 'opsz' 100;
+            font-weight: 500;
             line-height: 1.05;
-            letter-spacing: -0.015em;
+            letter-spacing: -0.01em;
             margin-bottom: 0.7rem;
         }
 
-        aside h1 .surname {
-            display: block;
-            font-style: italic;
-            color: var(--gold);
-            font-weight: 380;
-        }
+        aside h1 .surname { display: block; }
 
         aside .kicker {
-            font-family: var(--font-mono);
-            font-size: 0.68rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--text-tertiary);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: var(--text-secondary);
             margin-bottom: 1.6rem;
-            line-height: 2;
         }
 
         aside .contact {
@@ -200,26 +163,15 @@
         }
 
         aside .contact a {
-            font-family: var(--font-mono);
-            font-size: 0.76rem;
-            letter-spacing: 0.04em;
-            color: var(--text-secondary);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
+            font-size: 0.95rem;
+            color: var(--gold);
+            text-decoration: underline;
+            text-decoration-color: var(--gold-dim);
+            text-underline-offset: 3px;
             width: fit-content;
-            transition: color 0.3s ease;
         }
 
-        aside .contact a::before {
-            content: '→';
-            color: var(--gold-dim);
-            transition: color 0.3s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        aside .contact a:hover { color: var(--gold-bright); }
-        aside .contact a:hover::before { color: var(--gold-bright); transform: translateX(3px); }
+        aside .contact a:hover { color: var(--gold-bright); text-decoration-color: currentColor; }
 
         aside .toc {
             list-style: none;
@@ -228,38 +180,15 @@
         }
 
         aside .toc a {
-            font-family: var(--font-mono);
-            font-size: 0.74rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
+            display: block;
+            padding: 0.2rem 0;
+            font-size: 0.95rem;
             color: var(--text-tertiary);
             text-decoration: none;
-            display: flex;
-            align-items: baseline;
-            gap: 0.7rem;
-            padding: 0.32rem 0;
-            transition: color 0.3s ease;
         }
 
-
-        aside .toc a:hover,
-        aside .toc a.active { color: var(--text); }
-
-
-        aside .toc a .lbl { position: relative; }
-
-        aside .toc a .lbl::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            right: 100%;
-            bottom: -2px;
-            height: 1px;
-            background: var(--gold-dim);
-            transition: right 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        aside .toc a.active .lbl::after { right: 0; }
+        aside .toc a:hover { color: var(--text); }
+        aside .toc a.active { color: var(--text); font-weight: 500; }
 
         /* Main */
         main { min-width: 0; }
@@ -269,16 +198,6 @@
             font-size: 1.02rem;
             line-height: 1.9;
             max-width: 620px;
-        }
-
-        .about p::first-letter {
-            font-family: var(--font-display);
-            font-style: italic;
-            font-size: 3.6em;
-            float: left;
-            line-height: 0.78;
-            padding: 0.08em 0.14em 0 0;
-            color: var(--gold);
         }
 
         .about strong { color: var(--text); font-weight: 480; }
@@ -296,9 +215,9 @@
         section h2 {
             font-family: var(--font-display);
             font-size: 1.7rem;
-            font-weight: 440;
-            font-style: italic;
+            font-weight: 500;
             color: var(--text);
+            text-wrap: balance;
             white-space: nowrap;
         }
 
@@ -306,7 +225,7 @@
             flex: 1;
             height: 1px;
             align-self: center;
-            background: linear-gradient(90deg, var(--gold-faint), var(--hairline) 40%, transparent);
+            background: var(--hairline-strong);
         }
 
         /* Rows */
@@ -328,37 +247,27 @@
             font-family: var(--font-mono);
             font-size: 0.74rem;
             letter-spacing: 0.06em;
-            color: var(--gold-dim);
+            color: var(--text-tertiary);
             padding-top: 0.25rem;
-            transition: color 0.35s ease, text-shadow 0.35s ease;
+            transition: color 0.35s ease;
             white-space: nowrap;
         }
 
         .row:hover { background: var(--surface); }
 
-        .row:hover .yr {
-            color: var(--gold-bright);
-            text-shadow: 0 0 14px rgba(124, 90, 31, 0.45);
-        }
+        .row:hover .yr { color: var(--gold); }
 
         .row strong {
             color: var(--text);
             font-weight: 500;
-            background-image: linear-gradient(90deg, var(--gold-dim), var(--gold-dim));
-            background-size: 0% 1px;
-            background-repeat: no-repeat;
-            background-position: 0 96%;
-            transition: background-size 0.5s cubic-bezier(0.22, 1, 0.36, 1);
         }
-
-        .row:hover strong { background-size: 100% 1px; }
 
         .row em {
             color: var(--text);
             font-style: italic;
             font-family: var(--font-display);
             font-size: 0.97em;
-            font-weight: 380;
+            font-weight: 400;
         }
 
         .row .meta {
@@ -411,21 +320,9 @@
             background-image: linear-gradient(90deg, var(--gold-bright), var(--gold-bright));
         }
 
-        /* Reveal on scroll */
-        .reveal {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        .reveal.in { opacity: 1; transform: none; }
-
-        aside { animation: fadeIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) both; }
-        .about { animation: fadeIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(18px); }
-            to { opacity: 1; transform: none; }
+        a:focus-visible {
+            outline: 2px solid var(--gold);
+            outline-offset: 2px;
         }
 
         /* Footer */
@@ -443,17 +340,8 @@
             justify-content: space-between;
             gap: 1rem;
             flex-wrap: wrap;
-            font-family: var(--font-mono);
-            font-size: 0.72rem;
-            letter-spacing: 0.06em;
+            font-size: 0.85rem;
             color: var(--text-tertiary);
-        }
-
-        footer .sig {
-            font-family: var(--font-display);
-            font-style: italic;
-            font-size: 0.95rem;
-            color: var(--gold-dim);
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -463,8 +351,6 @@
                 animation-iteration-count: 1 !important;
                 transition-duration: 0.01ms !important;
             }
-            .reveal { opacity: 1; transform: none; }
-            #disk { display: none; }
         }
 
         /* Responsive */
@@ -505,7 +391,6 @@
 </head>
 <body>
 
-<div id="progress" aria-hidden="true"></div>
 <canvas id="disk" aria-hidden="true"></canvas>
 
 <div class="layout">
@@ -546,7 +431,7 @@
         </div>
 
         <!-- Publications -->
-        <section id="publications" class="reveal">
+        <section id="publications">
             <div class="section-head">
                 <h2>Publications</h2>
                 <span class="rule"></span>
@@ -630,7 +515,7 @@
         </section>
 
         <!-- Working Papers -->
-        <section id="working-papers" class="reveal">
+        <section id="working-papers">
             <div class="section-head">
                 <h2>Working Papers</h2>
                 <span class="rule"></span>
@@ -648,7 +533,7 @@
         </section>
 
         <!-- Ph.D. Thesis -->
-        <section id="thesis" class="reveal">
+        <section id="thesis">
             <div class="section-head">
                 <h2>Ph.D. Thesis</h2>
                 <span class="rule"></span>
@@ -665,7 +550,7 @@
         </section>
 
         <!-- Presentations -->
-        <section id="presentations" class="reveal">
+        <section id="presentations">
             <div class="section-head">
                 <h2>Presentations</h2>
                 <span class="rule"></span>
@@ -697,7 +582,7 @@
         </section>
 
         <!-- Software -->
-        <section id="software" class="reveal">
+        <section id="software">
             <div class="section-head">
                 <h2>Software</h2>
                 <span class="rule"></span>
@@ -741,7 +626,7 @@
         </section>
 
         <!-- Experience -->
-        <section id="experience" class="reveal">
+        <section id="experience">
             <div class="section-head">
                 <h2>Experience</h2>
                 <span class="rule"></span>
@@ -773,7 +658,7 @@
         </section>
 
         <!-- Education -->
-        <section id="education" class="reveal">
+        <section id="education">
             <div class="section-head">
                 <h2>Education</h2>
                 <span class="rule"></span>
@@ -960,39 +845,8 @@
         ctx.stroke();
     })();
 
-    // Scroll progress bar and disk rotation
+    // Scrollspy for the sidebar table of contents
     (() => {
-        const progress = document.getElementById('progress');
-        const disk = document.getElementById('disk');
-        const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-        let ticking = false;
-
-        function update() {
-            ticking = false;
-            const max = document.documentElement.scrollHeight - window.innerHeight;
-            const p = max > 0 ? window.scrollY / max : 0;
-            progress.style.transform = `scaleX(${p})`;
-            if (!reduced) disk.style.transform = `rotate(${p * 24}deg)`;
-        }
-
-        window.addEventListener('scroll', () => {
-            if (!ticking) { ticking = true; requestAnimationFrame(update); }
-        }, { passive: true });
-        update();
-    })();
-
-    // Reveal sections + scrollspy for the sidebar table of contents
-    (() => {
-        const reveal = new IntersectionObserver((entries) => {
-            for (const e of entries) {
-                if (e.isIntersecting) {
-                    e.target.classList.add('in');
-                    reveal.unobserve(e.target);
-                }
-            }
-        }, { threshold: 0.08 });
-        document.querySelectorAll('.reveal').forEach(el => reveal.observe(el));
-
         const links = new Map();
         document.querySelectorAll('.toc a').forEach(a => {
             links.set(a.getAttribute('href').slice(1), a);
